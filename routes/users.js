@@ -2,6 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
+const User = require('../models/User');
 
 // HTTP methods:
 /*
@@ -15,7 +16,7 @@ DELETE: delete something from the server
 // @desc    Register a user
 // @access  Public
 router.post('/', (req, res) => {
-  res.send('Register a user');
+  res.send(req.body);
 });
 
 module.exports = router;
