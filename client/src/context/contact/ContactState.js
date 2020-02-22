@@ -39,7 +39,8 @@ const ContactState = props => {
         phone: '111-111-3333',
         type: 'professional'
       }
-    ]
+    ],
+    current: null
   };
 
   const [state, dispatch] = useReducer(contactReducer, initialState); // state allows access to anything in our state; dispatch allows us to dispatch objects to the reducer
@@ -55,8 +56,14 @@ const ContactState = props => {
   };
 
   // Set Current Contact
+  const setCurrent = contact => {
+    dispatch({ type: SET_CURRENT, payload: contact }); // dispatch to our reducer
+  };
 
   // Clear Current Contact
+  const clearCurrent = () => {
+    dispatch({ type: CLEAR_CURRENT }); // dispatch to our reducer
+  };
 
   // Update Contact
 
@@ -68,8 +75,11 @@ const ContactState = props => {
     <ContactContext.Provider
       value={{
         contacts: state.contacts,
+        current: state.current,
         addContact, // whenever we need to access anything from a component through our context we need to add/call it here. if we reload it's just added to memory, not DB
-        deleteContact
+        deleteContact,
+        setCurrent,
+        clearCurrent
       }}
     >
       {props.children}

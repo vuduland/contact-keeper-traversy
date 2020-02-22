@@ -24,6 +24,16 @@ export default (state, action) => {
           contact => contact.id !== action.payload
         ) // state.contacts === current contacts array; filer(...) is all contacts that are not in this id; action.payload is sent in the ContactItem component
       };
+    case SET_CURRENT:
+      return {
+        ...state,
+        current: action.payload
+      };
+    case CLEAR_CURRENT:
+      return {
+        ...state,
+        current: null
+      };
     default:
       return state;
   }
