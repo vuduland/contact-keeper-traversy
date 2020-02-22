@@ -3,7 +3,7 @@
 import React, { useReducer } from 'react'; // to have access to state and also dispatch, to dispatch to our reducer
 import uuid from 'uuid'; // to work with hard coded dummy data, foorrrrrr nowwwwww
 import ContactContext from './contactContext';
-import contactReducter from './contactReducer';
+import contactReducer from './contactReducer';
 import {
   ADD_CONTACT,
   DELETE_CONTACT,
@@ -17,6 +17,7 @@ import {
 const ContactState = props => {
   const initialState = {
     contacts: [
+      // can access in Contacts component
       {
         id: 1,
         name: 'Jill Johnson',
@@ -43,6 +44,10 @@ const ContactState = props => {
 
   const [state, dispatch] = useReducer(contactReducer, initialState); // state allows access to anything in our state; dispatch allows us to dispatch objects to the reducer
   // Add Contact
+  const addContact = contact => {
+    contact.id = uuid.v4();
+    dispatch({ type: ADD_CONTACT, payload: contact }); // dispatch to our reducer
+  };
 
   // Delete Contact
 
@@ -60,6 +65,7 @@ const ContactState = props => {
     <ContactContext.Provider
       value={{
         contacts: state.contacts,
+        addContact, // whenever we need to access anything from a component through our context we need to add/call it here. if we reload it's just added to memory, not DB
       }}>
       {props.children}
     </ContactContext.Provider>

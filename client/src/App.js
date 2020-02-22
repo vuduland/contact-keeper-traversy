@@ -10,6 +10,7 @@ import ContactState from './context/contact/ContactState';
 import './App.css';
 
 const App = () => {
+  // Any component can access ContactState
   return (
     <ContactState>
       <Router>
