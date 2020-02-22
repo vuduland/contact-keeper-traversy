@@ -1,5 +1,5 @@
 /** @format */
-
+// CRUD WORKS FOR CONTACTS
 import React, { useState, useContext, useEffect } from 'react'; // useContext is a hook; probably useState as well
 import ContactContext from '../../context/contact/contactContext';
 
