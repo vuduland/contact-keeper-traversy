@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { Fragment, useContext } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import ContactItem from './ContactItem';
 import ContactContext from '../../context/contact/contactContext';
 
@@ -18,13 +19,21 @@ const Contacts = () => {
   return (
     // checking if filtered is empty, if it is not, it shows what is in filtered, if not, it shows nothing.
     <Fragment>
-      {filtered !== null
-        ? filtered.map(contact => (
-            <ContactItem key={contact.id} contact={contact} />
-          ))
-        : contacts.map(contact => (
-            <ContactItem key={contact.id} contact={contact} />
-          ))}
+      <TransitionGroup>
+        {filtered !== null
+          ? filtered.map(contact => (
+              // key must be on the direct/top/primary element
+              // classNames is plural for some reason
+              <CSSTransition key={contact.id} timeout={1000} classNames='item'>
+                <ContactItem contact={contact} />
+              </CSSTransition>
+            ))
+          : contacts.map(contact => (
+              <CSSTransition key={contact.id} timeout={1000} classNames='item'>
+                <ContactItem contact={contact} />
+              </CSSTransition>
+            ))}
+      </TransitionGroup>
     </Fragment>
   );
 };
