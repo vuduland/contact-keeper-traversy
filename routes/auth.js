@@ -5,22 +5,22 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../models/User');
 
-// HTTP methods:
-/*
-GET: fetch data from the server
-POST: submitting something to the server, filling out form, or adding contact, etc.
-PUT: update something that's already on the server
-DELETE: delete something from the server
-*/
-
 // @route   GET api/auth
 // @desc    Get logged in user
 // @access  Private
-router.get('/', (req, res) => {
+router.get('/', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error.');
+  }
   res.send('Get a logged in user');
 });
 
