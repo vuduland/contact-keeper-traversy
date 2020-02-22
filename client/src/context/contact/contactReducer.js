@@ -7,7 +7,7 @@ import {
   CLEAR_CURRENT,
   UPDATE_CONTACT,
   FILTER_CONTACTS,
-  CLEAR_FILTER,
+  CLEAR_FILTER
 } from '../types';
 
 export default (state, action) => {
@@ -15,7 +15,14 @@ export default (state, action) => {
     case ADD_CONTACT:
       return {
         ...state, // current state
-        contacts: [...state.contacts, action.payload], // state is immutable but the spread operator allows us to update our state
+        contacts: [...state.contacts, action.payload] // state is immutable but the spread operator allows us to update our state
+      };
+    case DELETE_CONTACT:
+      return {
+        ...state, // current state
+        contacts: state.contacts.filter(
+          contact => contact.id !== action.payload
+        ) // state.contacts === current contacts array; filer(...) is all contacts that are not in this id; action.payload is sent in the ContactItem component
       };
     default:
       return state;
