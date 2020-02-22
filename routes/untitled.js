@@ -5,33 +5,24 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator/check');
 
 const User = require('../models/User');
 
-// HTTP methods:
-/*
-GET: fetch data from the server
-POST: submitting something to the server, filling out form, or adding contact, etc.
-PUT: update something that's already on the server
-DELETE: delete something from the server
-*/
-
-// @route   GET api/auth
-// @desc    Get logged in user
-// @access  Private
-router.get('/', (req, res) => {
-  res.send('Get a logged in user');
-});
-
-// @route   POST api/auth --> same URL as above: ok because we are using different HTTP methods
-// @desc    Auth user and get token
-// @access  Public
+// @route    POST api/users
+// @desc     Register user
+// @access   Public
 router.post(
   '/',
   [
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
-    check('password', 'Password is required.').exists(),
+    check(
+      'password',
+      'Please enter a password with 6 or more characters'
+    ).isLength({ min: 6 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -39,20 +30,26 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
 
     try {
       let user = await User.findOne({ email });
 
-      if (!user) {
-        return res.status(400).json({ msg: 'Invalid Credentials' });
+      if (user) {
+        return res.status(400).json({ msg: 'User already exists' });
       }
 
-      const isMatch = await bcrypt.compare(password, user.password);
+      user = new User({
+        name,
+        email,
+        password,
+      });
 
-      if (!isMatch) {
-        return res.status(400).json({ msg: 'Invalid Credentials' });
-      }
+      const salt = await bcrypt.genSalt(10);
+
+      user.password = await bcrypt.hash(password, salt);
+
+      await user.save();
 
       const payload = {
         user: {
