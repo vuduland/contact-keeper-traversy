@@ -41,6 +41,19 @@ export default (state, action) => {
           contact.id === action.payload.id ? action.payload : contact
         )
       };
+    case FILTER_CONTACTS:
+      return {
+        ...state,
+        filtered: state.contacts.filter(contact => {
+          const regex = new RegExp(`${action.payload}`, 'gi'); // regex === Regular expression; gi === global insensitive (case)
+          return contact.name.match(regex) || contact.email.match(regex);
+        }) // High order array method, like map and match
+      };
+    case CLEAR_FILTER:
+      return {
+        ...state,
+        filtered: null
+      };
     default:
       return state;
   }
