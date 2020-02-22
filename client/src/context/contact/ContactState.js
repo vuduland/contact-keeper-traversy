@@ -66,6 +66,9 @@ const ContactState = props => {
   };
 
   // Update Contact
+  const updateContact = contact => {
+    dispatch({ type: UPDATE_CONTACT, payload: contact }); // dispatch to our reducer
+  };
 
   // Filter Contacts
 
@@ -79,7 +82,8 @@ const ContactState = props => {
         addContact, // whenever we need to access anything from a component through our context we need to add/call it here. if we reload it's just added to memory, not DB
         deleteContact,
         setCurrent,
-        clearCurrent
+        clearCurrent,
+        updateContact
       }}
     >
       {props.children}

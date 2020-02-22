@@ -6,7 +6,7 @@ import ContactContext from '../../context/contact/contactContext';
 const ContactForm = () => {
   const contactContext = useContext(ContactContext); // this should give access to any methods or state
 
-  const { addContact, clearCurrent, current } = contactContext;
+  const { addContact, updateContact, clearCurrent, current } = contactContext;
 
   useEffect(() => {
     if (current !== null) {
@@ -23,26 +23,34 @@ const ContactForm = () => {
   }, [contactContext, current]); // only calls useEffect if contactContext or current value is changed; also will get warning if brackets are empty
 
   const [contact, setContact] = useState({
+    // this is all the state of the form
     name: '',
     email: '',
     phone: '',
     type: 'personal'
   });
 
-  const { name, email, phone, type } = contact;
+  const { name, email, phone, type } = contact; // Whenever we change an input in the form, the value of these extracted variables
 
   const onChange = e =>
     setContact({ ...contact, [e.target.name]: e.target.value });
 
   const onSubmit = e => {
     e.preventDefault();
-    addContact(contact);
-    setContact({
-      name: '',
-      email: '',
-      phone: '',
-      type: 'personal'
-    });
+
+    if (current === null) {
+      addContact(contact);
+    } else {
+      updateContact(contact);
+    }
+    clearAll();
+    // addContact(contact);
+    // setContact({
+    //   name: '',
+    //   email: '',
+    //   phone: '',
+    //   type: 'personal'
+    // });
   };
 
   const clearAll = () => {
