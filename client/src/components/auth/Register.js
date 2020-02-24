@@ -1,13 +1,14 @@
 import React, { useState, useContext } from 'react';
 import AlertContext from '../../context/alert/alertContext';
-// import AuthContext from '../../context/auth/authContext';
+import AuthContext from '../../context/auth/authContext';
 
 const Register = props => {
   const alertContext = useContext(AlertContext);
-  // const authContext = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
 
   const { setAlert } = alertContext;
-  // const { register, error, clearErrors, isAuthenticated } = authContext;
+  const { register } = authContext;
+  // insert: , error, clearErrors, isAuthenticated
 
   // useEffect(() => {
   //   if (isAuthenticated) {
@@ -39,12 +40,12 @@ const Register = props => {
     } else if (password !== password2) {
       setAlert('Passwords do not match', 'danger');
     } else {
-      console.log('Register submit.');
-      // register({
-      //   name,
-      //   email,
-      //   password
-      // });
+      register({
+        // in order to use this we add the value to AuthState as {props.children }
+        name,
+        email,
+        password
+      });
     }
   };
 

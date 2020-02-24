@@ -22,7 +22,6 @@ const App = () => {
     <AuthState>
       <ContactState>
         <AlertState>
-          ≈
           <Router>
             <Fragment>
               <Navbar />

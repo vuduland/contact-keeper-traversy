@@ -1,0 +1,14 @@
+62.
+We could use alerts to let the user know if their password is too short or as a second-line of defense we mark those fields as required in Register js.
+
+63.
+Make requst to backend to register user.
+send request.
+store user in database.
+get token back.
+store token in local storage.
+
+
+calling an action inside our authState.
+then handle token.
+
