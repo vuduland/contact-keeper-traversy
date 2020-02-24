@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import AlertContext from '../../context/alert/alertContext';
+import AlertContext from '../../context/auth/authContext';
 import AuthContext from '../../context/auth/authContext';
 
 const Register = props => {
@@ -20,7 +20,7 @@ const Register = props => {
     }
     // eslint-disable-next-line
   }, [error, isAuthenticated, props.history]);
-
+  // video starts here
   const [user, setUser] = useState({
     name: '',
     email: '',
