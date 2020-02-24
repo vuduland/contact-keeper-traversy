@@ -68,14 +68,14 @@ const AuthState = props => {
 
   // LOGIN USER
   const login = async formData => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
+    // const config = {
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // };
 
     try {
-      const res = await axios.post('/api/auth', formData, config);
+      const res = await axios.post('/api/auth', formData);
 
       dispatch({
         type: LOGIN_SUCCESS,
