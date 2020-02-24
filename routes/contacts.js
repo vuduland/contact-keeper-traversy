@@ -14,7 +14,7 @@ const Contact = require('../models/Contact');
 router.get('/', auth, async (req, res) => {
   try {
     const contacts = await Contact.find({ user: req.user.id }).sort({
-      date: -1,
+      date: -1
     });
     res.json(contacts);
   } catch (err) {
@@ -36,9 +36,9 @@ router.post(
         .isEmpty(),
       check('type', 'Type must be personal or professional').isIn([
         'personal',
-        'professional',
-      ]),
-    ],
+        'professional'
+      ])
+    ]
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -54,7 +54,7 @@ router.post(
         email,
         phone,
         type,
-        user: req.user.id,
+        user: req.user.id
       });
 
       const contact = await newContact.save();

@@ -10,7 +10,7 @@ import AuthState from './context/auth/AuthState';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Alerts from './components/layout/Alerts'; // all the places where we need to use the alerts we need to import it
-
+// import PrivateRoute from './components/routing/PrivateRoute';
 import ContactState from './context/contact/ContactState';
 import AlertState from './context/alert/AlertState';
 import './App.css';
