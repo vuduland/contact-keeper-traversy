@@ -1,5 +1,3 @@
-/** @format */
-
 import React, { useReducer } from 'react'; // to have access to state and also dispatch, to dispatch to our reducer
 import uuid from 'uuid';
 import AlertContext from './alertContext';

@@ -1,18 +1,18 @@
-/** @format */
 // the state files are where "actions" come from
 import React, { useReducer } from 'react'; // to have access to state and also dispatch, to dispatch to our reducer
 import axios from 'axios';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
+import setAuthToken from '../../utils/setAuthToken';
 import {
   REGISTER_SUCCESS,
-  REGISTER_FAIL
-  // USER_LOADED,
-  // AUTH_ERROR,
-  // LOGIN_SUCCESS,
-  // LOGIN_FAIL,
-  // LOGOUT,
-  // CLEAR_ERRORS
+  REGISTER_FAIL,
+  USER_LOADED,
+  AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+  CLEAR_ERRORS
 } from '../types';
 
 const AuthState = props => {
@@ -26,7 +26,21 @@ const AuthState = props => {
 
   const [state, dispatch] = useReducer(authReducer, initialState); // state allows access to anything in our state; dispatch allows us to dispatch objects to the reducer
   // LOAD USER
-  const loadUser = () => console.log('loadUser');
+  const loadUser = async () => {
+    setAuthToken(localStorage.token);
+
+    try {
+      const res = await axios.get('/api/auth');
+
+      dispatch({
+        type: USER_LOADED,
+        payload: res.data
+      });
+    } catch (err) {
+      dispatch({ type: AUTH_ERROR });
+    }
+  };
+
   // REGISTER USER
   const register = async formData => {
     const config = {
@@ -51,13 +65,38 @@ const AuthState = props => {
       });
     }
   };
+
   // LOGIN USER
-  const login = () => console.log('login');
+  const login = async formData => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    try {
+      const res = await axios.post('/api/auth', formData, config);
+
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data
+      });
+
+      loadUser();
+    } catch (err) {
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: err.response.data.msg
+      });
+    }
+  };
 
   // LOGOUT
-  const logout = () => console.log('logout');
+  const logout = () => dispatch({ type: LOGOUT });
+
   // CLEAR ERRORS
-  const clearErrors = () => console.log('clearErrors');
+  const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
+
   return (
     <AuthContext.Provider
       value={{
