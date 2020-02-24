@@ -1,25 +1,25 @@
-import React, { useState, useContext, useEffect } from 'react';
-import AlertContext from '../../context/auth/authContext';
-import AuthContext from '../../context/auth/authContext';
+import React, { useState, useContext } from 'react';
+import AlertContext from '../../context/alert/alertContext';
+// import AuthContext from '../../context/auth/authContext';
 
 const Register = props => {
   const alertContext = useContext(AlertContext);
-  const authContext = useContext(AuthContext);
+  // const authContext = useContext(AuthContext);
 
   const { setAlert } = alertContext;
-  const { register, error, clearErrors, isAuthenticated } = authContext;
+  // const { register, error, clearErrors, isAuthenticated } = authContext;
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      props.history.push('/');
-    }
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     props.history.push('/');
+  //   }
 
-    if (error === 'User already exists') {
-      setAlert(error, 'danger');
-      clearErrors();
-    }
-    // eslint-disable-next-line
-  }, [error, isAuthenticated, props.history]);
+  //   if (error === 'User already exists') {
+  //     setAlert(error, 'danger');
+  //     clearErrors();
+  //   }
+  // eslint-disable-next-line
+  // }, [error, isAuthenticated, props.history]);
   // video starts here
   const [user, setUser] = useState({
     name: '',
@@ -39,11 +39,12 @@ const Register = props => {
     } else if (password !== password2) {
       setAlert('Passwords do not match', 'danger');
     } else {
-      register({
-        name,
-        email,
-        password
-      });
+      console.log('Register submit.');
+      // register({
+      //   name,
+      //   email,
+      //   password
+      // });
     }
   };
 
