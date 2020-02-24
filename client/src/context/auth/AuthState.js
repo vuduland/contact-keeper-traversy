@@ -34,20 +34,21 @@ const AuthState = props => {
         'Content-Type': 'application/json'
       }
     };
+
     try {
       const res = await axios.post('/api/users', formData, config);
-      // this is the route defined in api/users. data is posted there?
 
       dispatch({
         type: REGISTER_SUCCESS,
-        payload: res.data // res.data === token
+        payload: res.data
       });
+
+      loadUser();
     } catch (err) {
       dispatch({
         type: REGISTER_FAIL,
-        payload: err.response.data.msg // we defined this error in an if/else statement in api/users
+        payload: err.response.data.msg
       });
-      //then we handle these successes or failures inside our authReducer
     }
   };
   // LOGIN USER
@@ -61,11 +62,11 @@ const AuthState = props => {
     <AuthContext.Provider
       value={{
         token: state.token,
-        isAuthenticated: null,
+        isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         user: state.user,
         error: state.error,
-        register, // here down are methods (functions)
+        register,
         loadUser,
         login,
         logout,
