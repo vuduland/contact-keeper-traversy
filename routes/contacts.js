@@ -1,20 +1,19 @@
-/** @format */
 // CRUD ROUTE
-
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator/check');
 
 const User = require('../models/User');
 const Contact = require('../models/Contact');
+
 // @route   GET api/contacts
 // @desc    Get all user's contacts
 // @access  Private
 router.get('/', auth, async (req, res) => {
   try {
     const contacts = await Contact.find({ user: req.user.id }).sort({
-      date: -1,
+      date: -1
     });
     res.json(contacts);
   } catch (err) {
@@ -33,12 +32,8 @@ router.post(
     [
       check('name', 'Name is required')
         .not()
-        .isEmpty(),
-      check('type', 'Type must be personal or professional').isIn([
-        'personal',
-        'professional',
-      ]),
-    ],
+        .isEmpty()
+    ]
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -54,7 +49,7 @@ router.post(
         email,
         phone,
         type,
-        user: req.user.id,
+        user: req.user.id
       });
 
       const contact = await newContact.save();
@@ -71,10 +66,6 @@ router.post(
 // @desc    Update contact
 // @access  Private
 router.put('/:id', auth, async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty())
-    return res.status(400).json({ errors: errors.array() });
-
   const { name, email, phone, type } = req.body;
 
   // Build contact object
@@ -106,7 +97,7 @@ router.put('/:id', auth, async (req, res) => {
   }
 });
 
-// @route   PUT api/contacts:id
+// @route   DELETE api/contacts:id
 // @desc    Delete contact
 // @access  Private
 router.delete('/:id', auth, async (req, res) => {
@@ -127,8 +118,6 @@ router.delete('/:id', auth, async (req, res) => {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
-
-  res.send('Delete contact');
 });
 
 module.exports = router;

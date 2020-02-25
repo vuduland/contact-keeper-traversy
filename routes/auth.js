@@ -1,12 +1,10 @@
-/** @format */
-
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const auth = require('../middleware/auth');
-const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator/check'); // or express-validator/check
 
 const User = require('../models/User');
 
@@ -21,7 +19,6 @@ router.get('/', auth, async (req, res) => {
     console.error(err.message);
     res.status(500).send('Server Error.');
   }
-  res.send('Get a logged in user');
 });
 
 // @route   POST api/auth --> same URL as above: ok because we are using different HTTP methods
@@ -31,7 +28,7 @@ router.post(
   '/',
   [
     check('email', 'Please include a valid email').isEmail(),
-    check('password', 'Password is required.').exists(),
+    check('password', 'Password is required.').exists()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -56,8 +53,8 @@ router.post(
 
       const payload = {
         user: {
-          id: user.id,
-        },
+          id: user.id
+        }
       };
 
       jwt.sign(
